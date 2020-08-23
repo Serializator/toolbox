@@ -1,6 +1,5 @@
 import { createCommand } from 'commander';
-import { Connection } from '../../lib/mysql';
-import getDatabaseSize from '../../lib/mysql/get-database-size';
+import { Connection, getDatabaseSize } from '../../lib/mysql';
 import prettyBytes from 'pretty-bytes';
 
 const program = createCommand();
