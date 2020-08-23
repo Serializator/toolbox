@@ -22,7 +22,7 @@ program.arguments('<database>')
     }
 
     try {
-        const size: number = await getDatabaseSize(host, port, username, password, database);
+        const size: number = await getDatabaseSize({ host, port, username, password, database });
         console.log(`${database} is ${prettyBytes(size)}`);
     } catch ({ message }) {
         // TODO: prettify the message, do not print the raw error message from MySQL (including the executed query)
