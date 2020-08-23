@@ -1,6 +1,7 @@
 import { createCommand } from 'commander';
 import { Connection, getDatabaseSize } from '../../lib/mysql';
 import prettyBytes from 'pretty-bytes';
+import prettyTime from 'pretty-time';
 
 const program = createCommand();
 
@@ -45,8 +46,11 @@ program.arguments('<database>')
             };
         }
         
+        const start = process.hrtime();
         const size: number = await getDatabaseSize(connection);
-        console.log(`${database} is ${prettyBytes(size)}`);
+        const delta = process.hrtime(start);
+
+        console.log(`${database} is ${prettyBytes(size)}, it took ${prettyTime(delta)}`);
     } catch ({ message }) {
         // TODO: prettify the message, do not print the raw error message from MySQL (including the executed query)
         console.error(message);
