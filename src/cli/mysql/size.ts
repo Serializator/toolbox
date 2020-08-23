@@ -1,4 +1,5 @@
 import { createCommand } from 'commander';
+import { Connection } from '../../lib/mysql';
 import getDatabaseSize from '../../lib/mysql/get-database-size';
 import prettyBytes from 'pretty-bytes';
 
@@ -9,10 +10,13 @@ program.arguments('<database>')
     .option('-P, --port <port>', 'a description for the "port" option', '3306')
     .requiredOption('-u, --username <username>', 'a description for the "username" option')
     .requiredOption('-p, --password <password>', 'a description for the "password" option')
+    .option('--ssh-host <sshHost>', 'a description for the "sshHost" option')
+    .option('--ssh-port <sshPort>', 'a description for the "sshPort" option', '22')
+    .option('--ssh-user, --ssh-username <sshUsername>', 'a description for the "sshUsername" option')
     .parse(process.argv);
 
 (async () => {
-    const { host, port, username, password } = program.opts();
+    const { host, port, username, password, sshHost, sshPort, sshUsername } = program.opts();
     const [ database ] = program.args;
 
     if (typeof database === 'undefined') {
@@ -22,7 +26,27 @@ program.arguments('<database>')
     }
 
     try {
-        const size: number = await getDatabaseSize({ host, port, username, password, database });
+        const connection: Connection = { host, port, username, password, database }
+        
+        if (typeof sshHost !== 'undefined' || typeof sshUsername !== 'undefined') {
+            if (typeof sshHost === 'undefined') {
+                console.error("error: argument 'ssh_host' is not specified");
+                return;
+            }
+
+            if (typeof sshUsername === 'undefined') {
+                console.error("error: argument 'ssh_username' is not specified");
+                return;
+            }
+
+            connection.ssh = {
+                host: sshHost,
+                port: sshPort,
+                username: sshUsername
+            };
+        }
+        
+        const size: number = await getDatabaseSize(connection);
         console.log(`${database} is ${prettyBytes(size)}`);
     } catch ({ message }) {
         // TODO: prettify the message, do not print the raw error message from MySQL (including the executed query)

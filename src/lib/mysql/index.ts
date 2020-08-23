@@ -3,5 +3,12 @@ export interface Connection {
     port: number,
     username: string,
     password: string,
-    database: string
+    database: string,
+    ssh?: SSH
+};
+
+export interface SSH {
+    host: string,
+    port: number,
+    username: string
 };
