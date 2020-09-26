@@ -45,6 +45,8 @@ program.arguments('<database>')
                 username: sshUsername
             };
         }
+
+        // TODO: verify the "mysql" is installed
         
         const start = process.hrtime();
         const size: number = await getDatabaseSize(connection);
