@@ -1,5 +1,6 @@
 import executeQuery from './execute-query';
 import getDatabaseSize from './get-database-size';
+import getDatabaseDump from './get-database-dump';
 
 export interface Connection {
     host: string,
@@ -18,5 +19,6 @@ export interface SSH {
 
 export {
     executeQuery,
-    getDatabaseSize
+    getDatabaseSize,
+    getDatabaseDump
 };
