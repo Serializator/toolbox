@@ -1,3 +1,8 @@
+<img align="right" width="100" height="100" src="assets/illustration.svg">
+<br />
+<br />
+<br />
+
 # Toolbox
 A toolbox containing various tools to help with daily / repetitive tasks.
 
